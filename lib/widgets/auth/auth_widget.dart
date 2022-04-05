@@ -81,20 +81,20 @@ class __FormWidgetState extends State<_FormWidget> {
   final _passwordTextController = TextEditingController();
   String? errorText = null;
 
-  void _auth() {
-    final login = _loginTextController.text;
-    final password = _passwordTextController.text;
-    if (login == 'admin' && password == 'admin') {
-      errorText = null;
-
-      Navigator.of(context).pushNamed('/main_screen');
-
-      print('open app');
-    } else {
-      errorText = 'Не верный логин или пароль';
-    }
-    setState(() {});
-  }
+  // void _auth() {
+  //   final login = _loginTextController.text;
+  //   final password = _passwordTextController.text;
+  //   if (login == 'admin' && password == 'admin') {
+  //     errorText = null;
+  //
+  //     Navigator.of(context).pushNamed('/main_screen');
+  //
+  //     print('open app');
+  //   } else {
+  //     errorText = 'Не верный логин или пароль';
+  //   }
+  //   setState(() {});
+  // }
 
   void _resetPassword() {
     print('reser password');
@@ -158,7 +158,9 @@ class __FormWidgetState extends State<_FormWidget> {
           children: [
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: _auth,
+              onPressed:   () {
+                Navigator.of(context).pushNamed('/main_screen');
+              },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(color),
                 foregroundColor: MaterialStateProperty.all(Colors.white),
