@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:themoviedb/resources/resources.dart';
 
 class MovieList {
+  final int id;
   final String imageName;
   final String title;
   final String time;
   final String description;
 
   MovieList({
+    required this.id,
     required this.imageName,
     required this.title,
     required this.time,
@@ -16,7 +18,7 @@ class MovieList {
 }
 
 class MovieListWidget extends StatefulWidget {
-  MovieListWidget({Key? key}) : super(key: key);
+  const MovieListWidget({Key? key}) : super(key: key);
 
   @override
   State<MovieListWidget> createState() => _MovieListWidgetState();
@@ -25,24 +27,28 @@ class MovieListWidget extends StatefulWidget {
 class _MovieListWidgetState extends State<MovieListWidget> {
   final _movie = [
     MovieList(
+      id: 1,
       imageName: AppImages.mortal,
       title: 'Сметрельная битва',
       time: 'April 7, 2021',
       description: 'Mortal Kombat is back and better than ever in the next',
     ),
     MovieList(
+      id: 2,
       imageName: AppImages.mortal,
       title: 'Тихие зори',
       time: 'April 7, 2021',
       description: 'Mortal Kombat is back and better than ever in the next',
     ),
     MovieList(
+      id: 3,
       imageName: AppImages.mortal,
       title: 'Дюна',
       time: 'April 7, 2021',
       description: 'Mortal Kombat is back and better than ever in the next',
     ),
     MovieList(
+      id: 4,
       imageName: AppImages.mortal,
       title: 'Симпсоны',
       time: 'April 7, 2021',
@@ -50,18 +56,18 @@ class _MovieListWidgetState extends State<MovieListWidget> {
     ),
   ];
 
-  var _filtresMovies = <MovieList>[];
+  var _filteredMovies = <MovieList>[];
 
   final _searchController = TextEditingController();
 
   void _searchMovies() {
     final query = _searchController.text;
     if (query.isNotEmpty) {
-      _filtresMovies = _movie.where((MovieList movie) {
+      _filteredMovies = _movie.where((MovieList movie) {
         return movie.title.toLowerCase().contains(query.toLowerCase());
       }).toList();
     } else {
-      _filtresMovies = _movie;
+      _filteredMovies = _movie;
     }
     setState(() {});
   }
@@ -69,8 +75,16 @@ class _MovieListWidgetState extends State<MovieListWidget> {
   @override
   void initState() {
     super.initState();
-    _filtresMovies = _movie;
+    _filteredMovies = _movie;
     _searchController.addListener(_searchMovies);
+  }
+
+  void _onMovieTap(int index) {
+    final id = _movie[index].id;
+    Navigator.of(context).pushNamed(
+      '/main_screen/movie_details',
+      arguments: id,
+    );
   }
 
   @override
@@ -80,10 +94,10 @@ class _MovieListWidgetState extends State<MovieListWidget> {
         ListView.builder(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(top: 70),
-          itemCount: _filtresMovies.length,
+          itemCount: _filteredMovies.length,
           itemExtent: 163,
           itemBuilder: (BuildContext context, int index) {
-            final movie = _filtresMovies[index];
+            final movie = _filteredMovies[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Stack(
@@ -139,7 +153,7 @@ class _MovieListWidgetState extends State<MovieListWidget> {
                     color: Colors.transparent,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      onTap: () {},
+                      onTap: () => _onMovieTap(index),
                     ),
                   ),
                 ],
