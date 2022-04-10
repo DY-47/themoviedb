@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:themoviedb/widgets/moive_details/movie_detalis_cast_widget.dart';
 import 'package:themoviedb/widgets/moive_details/movie_detalis_main_info.dart';
 
 class MovieDetailsWidget extends StatefulWidget {
@@ -25,6 +26,8 @@ class _MovieDetailsWidgetState extends State<MovieDetailsWidget> {
         child: ListView(
           children: const [
             MovieDetMainInfo(),
+            SizedBox(height: 10),
+            MovieDetCastWidget(),
           ],
         ),
       ),
