@@ -93,7 +93,6 @@ class _FormWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const _AuthButtonWidget(),
         const _ErrorMessageWidget(),
         const Text(
           'Имя пользователя',
@@ -119,6 +118,7 @@ class _FormWidget extends StatelessWidget {
         Row(
           children: [
             const SizedBox(height: 10),
+            const _AuthButtonWidget(),
             const SizedBox(width: 30),
             TextButton(
               onPressed: () => model?.auth(context),
@@ -161,6 +161,13 @@ class _AuthButtonWidget extends StatelessWidget {
     const color = Color(0xFF01B4E4);
     final onPressed =
         model?.canStartAuth == true ? () => model?.auth(context) : null;
+    final child = model?.isAuthProgress == true
+        ? const SizedBox(
+            height: 15,
+            width: 15,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          )
+        : const Text('Войти');
 
     return ElevatedButton(
       onPressed: onPressed,
@@ -180,7 +187,7 @@ class _AuthButtonWidget extends StatelessWidget {
           ),
         ),
       ),
-      child: const Text('Войти'),
+      child: child,
     );
   }
 }
