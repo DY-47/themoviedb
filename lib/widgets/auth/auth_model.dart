@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:themoviedb/domain/api_client/api_client.dart';
+import 'package:themoviedb/domain/data_provider/session_data_provider.dart';
 
 class AuthModel extends ChangeNotifier {
   final _apiClient = ApiClient();
+  final _sessionDataProvider = SessionDataProvider();
+
   final loginTextController = TextEditingController();
   final passwordTextController = TextEditingController();
 
@@ -34,11 +39,21 @@ class AuthModel extends ChangeNotifier {
     } catch (error) {
       _errorMessage = 'Неправильный логин или пароль';
     }
-
     _isAuthProgress = false;
-    if (_errorMessage != null || sessionId != null) {
+
+    if (_errorMessage != null) {
       notifyListeners();
+      return;
     }
+
+    if (sessionId == null) {
+      _errorMessage = 'Неизвестная ошибка';
+      notifyListeners();
+      return;
+    }
+
+    await _sessionDataProvider.setSessionId(sessionId);
+    unawaited(Navigator.of(context).pushNamed('/main_screen'));
   }
 }
 
